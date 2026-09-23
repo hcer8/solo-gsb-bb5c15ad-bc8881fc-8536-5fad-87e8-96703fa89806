@@ -1,0 +1,18 @@
+services:
+  costguard:
+    build: .
+    image: graphql-cost-guard:latest
+    container_name: graphql-cost-guard
+    ports:
+      - "${HOST_PORT:-8000}:8000"
+    environment:
+      COSTGUARD_DB_PATH: /data/costguard.db
+      COSTGUARD_DEFAULT_LIST_MULTIPLIER: ${DEFAULT_LIST_MULTIPLIER:-10}
+      COSTGUARD_MAX_DEPTH: ${MAX_DEPTH:-50}
+      COSTGUARD_MAX_EXPANDED_NODES: ${MAX_EXPANDED_NODES:-20000}
+    volumes:
+      - costguard-data:/data
+    restart: unless-stopped
+
+volumes:
+  costguard-data:
