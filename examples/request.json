@@ -1,0 +1,7 @@
+{
+  "schema_sdl": "directive @cost(weight: Float!) on FIELD_DEFINITION\ndirective @listSize(size: Int) on FIELD\ntype Query { me: User @cost(weight: 2) users(first: Int): [User!]! @cost(weight: 5) posts(limit: Int): [Post!]! @cost(weight: 4) }\ntype User { id: ID! @cost(weight: 1) name: String! @cost(weight: 1) friends(first: Int): [User!]! @cost(weight: 3) posts(limit: Int): [Post!]! @cost(weight: 4) }\ntype Post { id: ID! @cost(weight: 1) title: String! @cost(weight: 1) author: User @cost(weight: 2) }\n",
+  "query": "query CostlyUserQuery($n: Int) { me { ...UserCore friends(first: $n) { ...UserCore posts(limit: 2) { id title author { ...UserCore } } } } }\nfragment UserCore on User { id name a_name: name }\n",
+  "variables": { "n": 10 },
+  "operation_name": "CostlyUserQuery",
+  "budget": 5000
+}

@@ -1,0 +1,21 @@
+query CostlyUserQuery($n: Int) {
+  me {
+    ...UserCore
+    friends(first: $n) {
+      ...UserCore
+      posts(limit: 2) {
+        id
+        title
+        author {
+          ...UserCore
+        }
+      }
+    }
+  }
+}
+
+fragment UserCore on User {
+  id
+  name
+  a_name: name
+}

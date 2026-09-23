@@ -1,0 +1,22 @@
+services:
+  cost-analyzer:
+    build: .
+    image: graphql-cost-analyzer:latest
+    container_name: graphql-cost-analyzer
+    ports:
+      - "8000:8000"
+    environment:
+      # 成本模型配置（均可覆盖，见 README）
+      COST_DB_PATH: /data/cost_cache.db
+      COST_DEFAULT_FIELD_WEIGHT: "1"
+      COST_DEFAULT_LIST_SIZE: "50"
+      COST_MAX_LIST_SIZE: "1000"
+      COST_DEPTH_MULTIPLIER: "1.5"
+      COST_TYPENAME_WEIGHT: "0.1"
+      COST_MAX_FRAGMENT_DEPTH: "64"
+    volumes:
+      - cost-data:/data
+    restart: unless-stopped
+
+volumes:
+  cost-data:
